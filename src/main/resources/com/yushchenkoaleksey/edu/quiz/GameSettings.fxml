@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="419.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yushchenkoaleksey.edu.quiz.GameSettingsController">
+   <children>
+      <Label contentDisplay="CENTER" layoutX="264.0" layoutY="12.0" prefHeight="25.0" prefWidth="88.0" text="QUIZ" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <BorderPane layoutX="109.0" layoutY="61.0" prefHeight="268.0" prefWidth="381.0" style="-fx-border-color: lightGrey;">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <top>
+            <Pane prefHeight="264.0" prefWidth="359.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="94.0" layoutY="2.0" text="Game settings">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
+                  <Spinner fx:id="numOfQuestionsSpinner" layoutX="195.0" layoutY="62.0" />
+                  <ChoiceBox fx:id="categoriesChoiceBox" layoutX="195.0" layoutY="96.0" prefHeight="25.0" prefWidth="149.0" />
+                  <Label fx:id="selectDifficultyLabel" layoutX="21.0" layoutY="134.0" prefHeight="17.0" prefWidth="127.0" text="Select Difficulty">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="numberOfQuestionsLabel" layoutX="21.0" layoutY="64.0" prefHeight="20.0" prefWidth="144.0" text="Number of Questions">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="selectCategoryLable" layoutX="21.0" layoutY="98.0" prefHeight="17.0" prefWidth="127.0" text="Select Category">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="selectTypeLable" layoutX="21.0" layoutY="170.0" prefHeight="17.0" prefWidth="127.0" text="Select Type">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="startButton" layoutX="14.0" layoutY="214.0" minHeight="20.0" mnemonicParsing="false" onAction="#start" prefHeight="36.0" prefWidth="151.0" style="-fx-background-color: F0C14B;" text="START" />
+                  <Button fx:id="saveSettingsButton" layoutX="194.0" layoutY="214.0" minHeight="20.0" mnemonicParsing="false" onAction="#saveSettings" prefHeight="36.0" prefWidth="151.0" style="-fx-background-color: F0C14B;" text="Save settings" />
+                  <ChoiceBox fx:id="difficultyChoiceBox" layoutX="195.0" layoutY="132.0" prefHeight="25.0" prefWidth="149.0" />
+                  <ChoiceBox fx:id="typeChoiceBox" layoutX="195.0" layoutY="168.0" prefHeight="25.0" prefWidth="149.0" />
+               </children>
+            </Pane>
+         </top>
+      </BorderPane>
+      <Ellipse blendMode="MULTIPLY" fill="#ff9b1f" layoutX="297.0" layoutY="30.0" radiusX="50.0" radiusY="18.0" stroke="BLACK" strokeType="INSIDE" />
+   </children>
+</AnchorPane>
