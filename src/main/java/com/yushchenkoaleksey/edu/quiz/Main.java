@@ -11,8 +11,6 @@ import java.util.Objects;
 
 public class Main extends javafx.application.Application {
 
-    //как получать актуальный контроллер, не создавая новый класс контроллера?
-
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Authorization.fxml"));
