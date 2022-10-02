@@ -1,5 +1,6 @@
 package com.yushchenkoaleksey.edu.quiz;
 
+import com.yushchenkoaleksey.edu.quiz.model.FXML_FILES;
 import com.yushchenkoaleksey.edu.quiz.model.Result;
 import com.yushchenkoaleksey.edu.quiz.repository.ResultRepository;
 import javafx.event.ActionEvent;
@@ -7,13 +8,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import org.jsoup.Jsoup;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import org.jsoup.Jsoup;
 
 public class GameController implements Initializable {
     @FXML private Label questionField;
@@ -28,7 +30,7 @@ public class GameController implements Initializable {
     @FXML private Label correctIncorrectLable;
     @FXML private ListView<String> listView;
     @FXML private Label questionNum;
-    protected static ResultRepository repository;
+    protected ResultRepository repository;
     private int counter = 0;
     private int correctAnswers = 0;
     private int incorrectAnswers = 0;
@@ -36,13 +38,13 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         questionField.setAlignment(Pos.CENTER);
-        if (repository != null) next();
         radioButtonGroup.selectedToggleProperty().addListener(
                 (observableValue, toggle, t1) -> checkButton.disableProperty().set(observableValue.getValue() == null));
     }
 
-    public static void setRepository(ResultRepository resultRepository) {
+    public void initData(ResultRepository resultRepository){
         repository = resultRepository;
+        next();
     }
 
     public void next() {
@@ -87,7 +89,7 @@ public class GameController implements Initializable {
         questionField.setText("the end".toUpperCase());
     }
 
-    public void check(ActionEvent event) {
+    public void check() {
         List<Result> results = repository.getResults();
         Result result = results.get(counter - 1);
         RadioButton selectedRadioButton = (RadioButton) radioButtonGroup.getSelectedToggle();
@@ -106,21 +108,25 @@ public class GameController implements Initializable {
         next();
     }
 
-    public void logout(ActionEvent event) {
+    public void logout(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
         alert.setHeaderText("You're about to logout!");
         alert.setContentText("Are you sure?");
         if (alert.showAndWait().get() == ButtonType.OK) {
-            SceneController.switchTo("authorization", event);
+            SceneController.switchTo(FXML_FILES.AUTHORIZATION.filename, logoutButton);
         }
     }
 
-    public void playAgain(ActionEvent event) {
+    public void playAgain(ActionEvent event) throws IOException {
+        reload();
+        SceneController.switchTo(FXML_FILES.INTERNET_OR_FILE.filename, logoutButton);
+    }
+
+    private void reload(){
         SceneController.reload();
         counter = 0;
         correctAnswers = 0;
         incorrectAnswers = 0;
-        SceneController.switchTo("internetOrFile", event);
     }
 }

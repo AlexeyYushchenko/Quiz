@@ -4,25 +4,29 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yushchenkoaleksey.edu.quiz.model.Category;
 import com.yushchenkoaleksey.edu.quiz.model.CategoryInfo;
+import com.yushchenkoaleksey.edu.quiz.model.FXML_FILES;
 import com.yushchenkoaleksey.edu.quiz.repository.CategoryRepository;
 import com.yushchenkoaleksey.edu.quiz.repository.ResultRepository;
+import com.yushchenkoaleksey.edu.quiz.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.FileChooser;
-
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameSettingsController implements Initializable {
@@ -34,6 +38,7 @@ public class GameSettingsController implements Initializable {
     @FXML private Label selectDifficultyLabel;
     @FXML private Button startButton;
     @FXML private Button saveSettingsButton;
+    @FXML private CheckBox showAnswerCheckBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,7 +53,7 @@ public class GameSettingsController implements Initializable {
 
             ArrayList<String> difficultyList = new ArrayList<>(Arrays.asList("Any Difficulty", "Easy", "Medium", "Hard"));
             this.difficultyChoiceBox.setItems(FXCollections.observableList(difficultyList));
-            this.difficultyChoiceBox.setValue(difficultyList.get(0));
+            this.difficultyChoiceBox.setValue(difficultyList.get(0)); //"Any Type"
 
             ArrayList<String> typeList = new ArrayList<>(Arrays.asList("Any Type", "Multiple Choice", "True / False"));
             this.typeChoiceBox.setItems(FXCollections.observableList(typeList));
@@ -58,17 +63,61 @@ public class GameSettingsController implements Initializable {
         }
     }
 
-    public void start(ActionEvent event) throws IOException {
+    public void initData(CheckBox checkBox){
+        this.showAnswerCheckBox = checkBox;
+    }
+
+    public void start(ActionEvent event) throws IOException, ClassNotFoundException {
         ResultRepository resultRepository = getQuestionRepository();
-        Integer responseCode = resultRepository.getResponseCode();
-        if (responseCode == 0) {
-            GameController.setRepository(resultRepository);
-            SceneController.rootMap.put("game", FXMLLoader.load(Objects.requireNonNull(SceneController.class.getResource("Game.fxml"))));
-            SceneController.switchTo("game", event);
+        if (resultRepository.getResponseCode() == 0) {
+            launchGame(resultRepository);
         } else {
             CategoryInfo categoryInfo = getCategoryInto(categoriesChoiceBox.getValue().getId());
-            showAlert(Alert.AlertType.ERROR, "Oops", "We have just so many questions:", categoryInfo.toString());
+            Utils.showAlert(Alert.AlertType.ERROR, "Oops", "We only have so many questions:", categoryInfo.toString());
         }
+    }
+
+    void launchGame(ResultRepository resultRepository) throws IOException {
+
+        BorderPane borderPane = new BorderPane();
+
+        TabPane tabPane = new TabPane();
+        tabPane.setSide(Side.TOP);
+        tabPane.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        List<TabController> tabs = new ArrayList<>();
+
+        for (int i = 0; i < numOfQuestionsSpinner.getValue(); i++) {
+            Tab tab = new Tab("Q" + (i + 1));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_FILES.TAB.filename));
+            Parent parent = loader.load();
+            TabController controller = loader.getController();
+            tabs.add(controller);
+            controller.initData(resultRepository, i, showAnswerCheckBox.selectedProperty().get(), tab);
+            tab.setContent(parent);
+            tab.setClosable(false);
+            tabPane.getTabs().add(tab);
+        }
+        Tab tab = new Tab("CHECK");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_FILES.CHECK.filename));
+        Parent parent = loader.load();
+        CheckController controller = loader.getController();
+        controller.initData(resultRepository, tabs);
+        tab.setContent(parent);
+        tab.setClosable(false);
+        tabPane.getTabs().add(tab);
+
+        borderPane.setCenter(tabPane);
+        Scene scene = new Scene(borderPane, 760, 600);
+
+        Stage stage = new Stage();
+        stage.setTitle("Quiz!");
+        Utils.setIcon(stage);
+        stage.setScene(scene);
+        stage.show();
+
+        stage = (Stage) typeChoiceBox.getScene().getWindow();
+        stage.close();
     }
 
     private ResultRepository getQuestionRepository() throws IOException {
@@ -114,39 +163,21 @@ public class GameSettingsController implements Initializable {
     }
 
     public void saveSettings(ActionEvent event) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
-        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
-        fileChooser.getExtensionFilters().add(csvFilter);
-        fileChooser.getExtensionFilters().add(jsonFilter);
-        fileChooser.setInitialDirectory(new File(AppPreferences.prefs.get("default_folder", AppPreferences.DEFAULT_SAVING_FOLDER)));
-
-        File file = fileChooser.showSaveDialog(null);
-
-        if (file == null) return;
-        try {
-            if (file.toString().endsWith(".json")) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.writeValue(file, getQuestionRepository());
-            }else if (file.toString().endsWith(".csv")){
-                Files.writeString(file.toPath(), getQuestionRepository().toCsv());
+        ResultRepository questionRepository = getQuestionRepository();
+        if (questionRepository.getResponseCode() == 0) {
+            File file = Utils.getSaveFileLocation();
+            if (file != null) {
+                if (file.toString().endsWith(".json")) {
+                    ResultRepository.saveAsJson(file, questionRepository);
+                } else if (file.toString().endsWith(".csv")) {
+                    ResultRepository.saveAsCsv(file, questionRepository);
+                }
             }
-
-            if (!file.getAbsolutePath().equals(AppPreferences.DEFAULT_SAVING_FOLDER)) {
-                AppPreferences.prefs.put("default_folder", file.getParentFile().getAbsolutePath());
-            }
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Questions were successfully saved.", null);
-
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "ERROR", "Something went wrong!", "File was NOT saved.");
+        } else if (questionRepository.getResponseCode() == 1) {
+            CategoryInfo categoryInfo = getCategoryInto(categoriesChoiceBox.getValue().getId());
+            Utils.showAlert(Alert.AlertType.ERROR, "Oops", "We only have so many questions:", categoryInfo.toString());
+        }else {
+            Utils.showAlert(Alert.AlertType.ERROR, "ERROR", String.valueOf(questionRepository.getResponseCode()), null);
         }
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String headerText, String contentText) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-        alert.show();
     }
 }

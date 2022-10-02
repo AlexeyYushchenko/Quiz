@@ -41,15 +41,15 @@
                      </font>
                   </Label>
                   <TextField fx:id="loginField" layoutX="42.0" layoutY="74.0" prefHeight="26.0" prefWidth="271.0" promptText="At least 4 characters" />
-                  <Label fx:id="createAccountLable" layoutX="42.0" layoutY="2.0" text="Create account">
+                  <Label fx:id="createAccountLabel" layoutX="42.0" layoutY="2.0" text="Create account">
                      <font>
                         <Font size="27.0" />
                      </font>
                   </Label>
                   <TextField fx:id="passwordField" layoutX="44.0" layoutY="146.0" prefHeight="26.0" prefWidth="271.0" promptText="At least 6 characters" />
                   <Button fx:id="createAccountButton" disable="true" layoutX="42.0" layoutY="209.0" minHeight="20.0" mnemonicParsing="false" onAction="#signUp" prefHeight="36.0" prefWidth="271.0" style="-fx-background-color: F0C14B; -fx-cursor: hand;" text="Create Quiz account" />
-                  <Label fx:id="infoPasswordLable" layoutX="65.0" layoutY="175.0" prefHeight="17.0" prefWidth="250.0" text="Passwords must be at least 6 characters." />
-                  <Label fx:id="infoLoginLable" layoutX="64.0" layoutY="102.0" prefHeight="17.0" prefWidth="250.0" text="Login must be at least 4 characters." visible="false" />
+                  <Label fx:id="infoPasswordLabel" layoutX="65.0" layoutY="175.0" prefHeight="17.0" prefWidth="250.0" text="Passwords must be at least 6 characters." />
+                  <Label fx:id="infoLoginLabel" layoutX="64.0" layoutY="102.0" prefHeight="17.0" prefWidth="250.0" text="Login must be at least 4 characters." visible="false" />
                   <ImageView fx:id="infoLogoPassword" fitHeight="13.0" fitWidth="9.0" layoutX="52.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@infoLogo.png" />

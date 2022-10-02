@@ -10,6 +10,7 @@ module com.yushchenkoaleksey.edu.quiz {
     requires java.sql;
     requires org.jsoup;
     requires java.prefs;
+    requires org.xerial.sqlitejdbc;
 
     opens com.yushchenkoaleksey.edu.quiz to javafx.fxml;
     exports com.yushchenkoaleksey.edu.quiz;

@@ -1,10 +1,13 @@
 package com.yushchenkoaleksey.edu.quiz;
 
+import com.yushchenkoaleksey.edu.quiz.db.Database;
+import com.yushchenkoaleksey.edu.quiz.model.FXML_FILES;
+import com.yushchenkoaleksey.edu.quiz.util.Utils;
 import javafx.beans.binding.BooleanBinding;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,11 +15,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
 import static javafx.beans.binding.Bindings.createBooleanBinding;
 
 public class RegistrationController implements Initializable {
@@ -24,8 +25,8 @@ public class RegistrationController implements Initializable {
     @FXML private TextField loginField;
     @FXML private TextField passwordField;
     @FXML private Button createAccountButton;
-    @FXML private Label infoPasswordLable;
-    @FXML private Label infoLoginLable;
+    @FXML private Label infoPasswordLabel;
+    @FXML private Label infoLoginLabel;
     @FXML private ImageView infoLogoPassword;
     @FXML private ImageView infoLogoLogin;
     @FXML private ImageView loginOk;
@@ -49,17 +50,23 @@ public class RegistrationController implements Initializable {
         EventHandler<KeyEvent> eventHandler = keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER && !createAccountButton.isDisabled()){
                 createAccountButton.fire();
-                keyEvent.consume(); //что делает consume?
+                keyEvent.consume();
             }};
         loginField.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
         passwordField.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
     }
 
-    public void signIn(ActionEvent event) {
-        SceneController.switchTo("authorization", event);
+    public void signIn() {
+        SceneController.switchTo(FXML_FILES.AUTHORIZATION.filename, loginField);
     }
 
-    public void signUp(ActionEvent event) {
-        DBUtils.signUpUser(event, loginField.getText(), passwordField.getText());
+    public void signUp() {
+        if (!Database.checkUser(loginField.getText())) {
+            Database.addUser(loginField.getText(), passwordField.getText());
+            Utils.showAlert(Alert.AlertType.INFORMATION, "Congratulations!", "You've successfully created QUIZ account", null);
+            SceneController.switchTo(FXML_FILES.AUTHORIZATION.filename, loginField);
+        } else {
+            Utils.showAlert(Alert.AlertType.ERROR, "ERROR", "Such user already exists", null);
+        }
     }
 }

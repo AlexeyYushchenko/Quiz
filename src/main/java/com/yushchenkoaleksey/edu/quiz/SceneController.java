@@ -1,12 +1,15 @@
 package com.yushchenkoaleksey.edu.quiz;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import com.yushchenkoaleksey.edu.quiz.model.FXML_FILES;
+import com.yushchenkoaleksey.edu.quiz.util.Utils;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -38,12 +41,35 @@ public class SceneController {
         }
     }
 
-    @FXML
-    public static void switchTo(String sceneName, ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        if (stage.getScene() != null) stage.setScene(null);
-        if (scene != null) scene.setRoot(rootMap.get(sceneName));
-        else scene = new Scene(rootMap.get(sceneName));
-        stage.setScene(scene);
+    //метод для переключения сцен в одном окне.
+//    @FXML
+//    public static void switchTo(String sceneName, ActionEvent event) {
+//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        if (stage.getScene() != null) stage.setScene(null);
+//        if (scene != null) scene.setRoot(rootMap.get(sceneName));
+//        else scene = new Scene(rootMap.get(sceneName));
+//        stage.setScene(scene);
+//    }
+
+    public static void switchTo(String fileName, Control controlElement){
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource(fileName));
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setScene(new Scene(loader.load()));
+            Utils.setIcon(stage);
+            stage.show();
+            if (fileName.equals(FXML_FILES.SETTINGS.filename)){
+                GameSettingsController controller = loader.getController();
+                controller.initData((CheckBox) controlElement);
+            }
+            closeWindow(controlElement);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void closeWindow(Control controlElement) {
+        Stage stage = (Stage) controlElement.getScene().getWindow();
+        stage.close();
     }
 }
