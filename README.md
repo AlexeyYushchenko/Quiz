@@ -1,5 +1,5 @@
 # Quiz
-Quiz game.
+Quiz game where you choose questions by categories and answer them similar to the 'Millionaire' game.
 
 Technologies used:
 Java FX,
