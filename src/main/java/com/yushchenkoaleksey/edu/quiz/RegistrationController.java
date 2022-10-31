@@ -1,7 +1,7 @@
 package com.yushchenkoaleksey.edu.quiz;
 
-import com.yushchenkoaleksey.edu.quiz.db.Database;
 import com.yushchenkoaleksey.edu.quiz.model.FXML_FILES;
+import com.yushchenkoaleksey.edu.quiz.repository.UserRepository;
 import com.yushchenkoaleksey.edu.quiz.util.Utils;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.EventHandler;
@@ -15,9 +15,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 import static javafx.beans.binding.Bindings.createBooleanBinding;
 
 public class RegistrationController implements Initializable {
@@ -60,13 +63,28 @@ public class RegistrationController implements Initializable {
         SceneController.switchTo(FXML_FILES.AUTHORIZATION.filename, loginField);
     }
 
-    public void signUp() {
-        if (!Database.checkUser(loginField.getText())) {
-            Database.addUser(loginField.getText(), passwordField.getText());
-            Utils.showAlert(Alert.AlertType.INFORMATION, "Congratulations!", "You've successfully created QUIZ account", null);
-            SceneController.switchTo(FXML_FILES.AUTHORIZATION.filename, loginField);
-        } else {
-            Utils.showAlert(Alert.AlertType.ERROR, "ERROR", "Such user already exists", null);
+//    SIGNUP WITH JSON DATABASE
+//    public void signUp() {
+//        if (!JSON_DB.checkUser(loginField.getText())) {
+//            JSON_DB.addUser(loginField.getText(), passwordField.getText());
+//            Utils.showAlert(Alert.AlertType.INFORMATION, "Congratulations!", "You've successfully created QUIZ account", null);
+//            SceneController.switchTo(FXML_FILES.AUTHORIZATION.filename, loginField);
+//        } else {
+//            Utils.showAlert(Alert.AlertType.ERROR, "ERROR", "Such user already exists", null);
+//        }
+//    }
+
+//    SIGNUP WITH SQLITE DATABASE
+    public void signUp() throws SQLException {
+        try(UserRepository repository = new UserRepository()) {
+            if (repository.add(loginField.getText(), passwordField.getText())) {
+                Utils.showAlert(Alert.AlertType.INFORMATION, "Congratulations!", "You've successfully created QUIZ account", null);
+                SceneController.switchTo(FXML_FILES.AUTHORIZATION.filename, loginField);
+            } else {
+                Utils.showAlert(Alert.AlertType.ERROR, "ERROR", "Such user already exists", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

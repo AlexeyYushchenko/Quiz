@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="391.0" prefWidth="744.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yushchenkoaleksey.edu.quiz.TabController">
+   <children>
+      <Label contentDisplay="CENTER" layoutX="338.0" layoutY="14.0" prefHeight="25.0" prefWidth="88.0" text="QUIZ" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <BorderPane layoutX="20.0" layoutY="61.0" prefHeight="307.0" prefWidth="706.0" style="-fx-border-color: lightGrey;">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <center>
+            <Pane prefHeight="261.0" prefWidth="663.0" BorderPane.alignment="CENTER">
+               <children>
+                  <RadioButton fx:id="radioButtonA" layoutX="47.0" layoutY="167.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="285.0" wrapText="true">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="radioButtonGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="radioButtonB" layoutX="363.0" layoutY="167.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="285.0" toggleGroup="$radioButtonGroup" wrapText="true" />
+                  <RadioButton fx:id="radioButtonC" layoutX="47.0" layoutY="217.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="285.0" toggleGroup="$radioButtonGroup" wrapText="true" />
+                  <RadioButton fx:id="radioButtonD" layoutX="363.0" layoutY="217.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="285.0" toggleGroup="$radioButtonGroup" wrapText="true" />
+                  <Label fx:id="questionField" contentDisplay="CENTER" layoutX="17.0" layoutY="17.0" prefHeight="108.0" prefWidth="654.0" text="The Fields Medal, one of the most sought after awards in mathematics, is awarded every how many years?" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+      <Ellipse blendMode="MULTIPLY" fill="#ff9b1f" layoutX="371.0" layoutY="32.0" radiusX="50.0" radiusY="18.0" stroke="BLACK" strokeType="INSIDE" />
+   </children>
+</AnchorPane>

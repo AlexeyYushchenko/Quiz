@@ -1,9 +1,8 @@
 package com.yushchenkoaleksey.edu.quiz;
 
-import com.yushchenkoaleksey.edu.quiz.db.Database;
 import com.yushchenkoaleksey.edu.quiz.model.FXML_FILES;
+import com.yushchenkoaleksey.edu.quiz.repository.UserRepository;
 import javafx.beans.binding.BooleanBinding;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,8 +12,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import java.io.IOException;
+
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import static javafx.beans.binding.Bindings.createBooleanBinding;
 
@@ -63,14 +63,27 @@ public class AuthorizationController implements Initializable {
         });
     }
 
-    public void login(ActionEvent event) {
-        if (Database.checkLoginPasswordCorrect(loginField.getText(), passwordField.getText())) {
-            SceneController.switchTo(FXML_FILES.INTERNET_OR_FILE.filename, loginField);
-            Database.setCurrentUser(loginField.getText());
+////    LOGIN WITH JSON DATABASE
+//    public void login(ActionEvent event) {
+//        if (JSON_DB.checkLoginPasswordCorrect(loginField.getText(), passwordField.getText())) {
+//            SceneController.switchTo(FXML_FILES.INTERNET_OR_FILE.filename, loginField);
+//            JSON_DB.setCurrentUser(loginField.getText());
+//        }
+//    }
+
+//    LOGIN WITH SQLITE DATABASE
+    public void login() throws SQLException {
+        try(UserRepository repository = new UserRepository()) {
+            if (repository.signIn(loginField.getText(), passwordField.getText())) {
+                SceneController.switchTo(FXML_FILES.INTERNET_OR_FILE.filename, loginField);
+                AppPreferencesAndSettings.setCurrentUser(loginField.getText());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void createAccount(ActionEvent event) throws IOException {
+    public void createAccount() {
         SceneController.switchTo(FXML_FILES.REGISTRATION.filename, enterButton);
     }
 }

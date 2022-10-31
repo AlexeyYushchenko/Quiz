@@ -1,0 +1,9 @@
+.tab:selected {
+    -fx-background-color: orange;
+    -fx-text-base-color: black;
+}
+
+.tab:hover {
+-fx-color: orange;
+-fx-text-base-color: black;
+}

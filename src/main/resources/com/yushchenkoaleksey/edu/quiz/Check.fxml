@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="530.0" prefWidth="744.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yushchenkoaleksey.edu.quiz.CheckController">
+   <children>
+      <Label contentDisplay="CENTER" layoutX="338.0" layoutY="14.0" prefHeight="25.0" prefWidth="88.0" text="QUIZ" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <BorderPane layoutX="20.0" layoutY="61.0" prefHeight="449.0" prefWidth="706.0" style="-fx-border-color: lightGrey;">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <bottom>
+            <Pane prefHeight="426.0" prefWidth="218.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="checkButton" disable="true" layoutX="352.0" layoutY="90.0" minHeight="20.0" mnemonicParsing="false" onAction="#check" prefHeight="36.0" prefWidth="290.0" style="-fx-background-color: F0C14B;" text="CHECK ANSWERS" />
+                  <Button fx:id="logoutButton" layoutX="606.0" layoutY="376.0" minHeight="20.0" mnemonicParsing="false" onAction="#logout" prefHeight="36.0" prefWidth="65.0" style="-fx-background-color: F0C14B;" text="Log out" textAlignment="JUSTIFY" />
+                  <ListView fx:id="listView" layoutX="21.0" layoutY="90.0" prefHeight="315.0" prefWidth="296.0" />
+                  <Label layoutX="269.0" layoutY="23.0" text="STATISTICS">
+                     <font>
+                        <Font name="System Bold" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="356.0" layoutY="190.0" text="Percent of correct answers:">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Label>
+                  <Label fx:id="percentLable" layoutX="601.0" layoutY="188.0" text="--">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Label>
+                  <Label fx:id="correctIncorrectLable" layoutX="601.0" layoutY="158.0" text="--">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Label>
+                  <Button fx:id="playAgainButton" layoutX="516.0" layoutY="376.0" minHeight="20.0" mnemonicParsing="false" onAction="#playAgain" prefHeight="36.0" prefWidth="80.0" style="-fx-background-color: F0C14B;" text="Play again" textAlignment="JUSTIFY" />
+                  <Label layoutX="356.0" layoutY="158.0" text="Correct/Incorrect:">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Label>
+                  <Label layoutX="356.0" layoutY="254.0" text="Total percent of correct answers:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="totalPercentLabel" layoutX="601.0" layoutY="252.0" text="--">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="totalQuestions" layoutX="601.0" layoutY="286.0" text="--">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="356.0" layoutY="286.0" text="Total answered questions:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="totalCorrectIncorrectLabel" layoutX="601.0" layoutY="222.0" text="--">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="356.0" layoutY="222.0" text="Total Correct/Incorrect:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </bottom>
+      </BorderPane>
+      <Ellipse blendMode="MULTIPLY" fill="#ff9b1f" layoutX="371.0" layoutY="32.0" radiusX="50.0" radiusY="18.0" stroke="BLACK" strokeType="INSIDE" />
+   </children>
+</AnchorPane>

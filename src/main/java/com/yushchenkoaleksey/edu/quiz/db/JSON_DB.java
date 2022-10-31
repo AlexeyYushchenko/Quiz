@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Database {
+public class JSON_DB {
     private static final String USERS_FULL_PATH = "C:\\Users\\User\\IdeaProjects\\Quiz\\src\\main\\resources\\com\\yushchenkoaleksey\\edu\\quiz\\usersDB";
     private static final String STATISTICS_FULL_PATH = "C:\\Users\\User\\IdeaProjects\\Quiz\\src\\main\\resources\\com\\yushchenkoaleksey\\edu\\quiz\\statisticsDB";
     private static HashMap<String, String> users = new HashMap<>();
@@ -33,7 +33,7 @@ public class Database {
         }
     }
 
-    private Database(){}
+    private JSON_DB(){}
 
     public static UserStatistics getUserStatistics(String username){
          return statistics.getOrDefault(username, new UserStatistics());

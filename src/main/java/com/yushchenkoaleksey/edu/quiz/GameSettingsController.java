@@ -73,7 +73,7 @@ public class GameSettingsController implements Initializable {
             launchGame(resultRepository);
         } else {
             CategoryInfo categoryInfo = getCategoryInto(categoriesChoiceBox.getValue().getId());
-            Utils.showAlert(Alert.AlertType.ERROR, "Oops", "We only have so many questions:", categoryInfo.toString());
+            Utils.showAlert(Alert.AlertType.ERROR, "Error", "We only have so many questions:", categoryInfo.toString());
         }
     }
 
