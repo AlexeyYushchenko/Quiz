@@ -29,7 +29,7 @@ public class AuthorizationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        Setting a dependency: if both fields, login and password, are filled in according to
-//        the conditions (here text length must be greater than 0),
+//        the conditions (text length must be > 0),
 //        then the "Enter" button becomes active.
         BooleanBinding loginFieldValid = createBooleanBinding(
                 () -> loginField.textProperty().getValue().length() > 0, loginField.textProperty()
@@ -73,6 +73,7 @@ public class AuthorizationController implements Initializable {
 
 //    LOGIN WITH SQLITE DATABASE
     public void login() throws SQLException {
+//        ДЗ реле с выбором JSON или SQLITE
         try(UserRepository repository = new UserRepository()) {
             if (repository.signIn(loginField.getText(), passwordField.getText())) {
                 SceneController.switchTo(FXML_FILES.INTERNET_OR_FILE.filename, loginField);

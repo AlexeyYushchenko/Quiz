@@ -3,7 +3,6 @@ package com.yushchenkoaleksey.edu.quiz.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yushchenkoaleksey.edu.quiz.model.Category;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;

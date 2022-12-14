@@ -37,8 +37,6 @@ public class CheckController {
                     answersReceived++;
                     tabController.setChoiceMade(true);
                     if (answersReceived >= repository.getResults().size()) checkButton.setDisable(false);
-                }else {
-                    tabController.getTab().setStyle("tab-color: blue;");
                 }
             });
         }
